@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 class Users extends Model
@@ -14,6 +15,10 @@ class Users extends Model
     ];
 
     public $timestamps = false;
+
+    public function setPasswordAttribute($value) {
+        $this->attributes['password'] = hash('sha256', $value);
+    }
 
     public static function generateAccessToken(Users $user)
     {

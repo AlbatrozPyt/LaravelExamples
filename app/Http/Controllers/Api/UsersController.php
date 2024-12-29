@@ -34,7 +34,9 @@ class UsersController extends Controller
      */
     public function store(UsersRequest $request)
     {
-        return response()->json(['message' => 'teste']);                                                                                    
+        $user = Users::create($request->validated());
+
+        return response()->json($user, 201);
     }
 
     /**
@@ -62,7 +64,7 @@ class UsersController extends Controller
 
         if (is_null($user)) {
             return response()->json(['message' => 'O usuário não foi encontrado'], 404);
-        }        
+        }
 
         $user->update($request->all());
         return response()->json($user);

@@ -23,16 +23,18 @@ class UsersRequest extends FormRequest
      */
     public function rules(): array
     {
+        // Validações
         return [
             'id_type' => 'required', 
             'name' => 'required|min:8',
-            'email' => 'required|min:12',
+            'email' => 'required|min:12|unique:users',
             'password' => 'required|min:8'
         ];
     }
 
     public function messages()
     {
+        // Mensagens de erro (Email e Nome)
         return [
             'email.required' => 'email inválido',
             'email.min' => 'email deve conter pelo menos 12 caracteres',
@@ -42,10 +44,13 @@ class UsersRequest extends FormRequest
 
     protected function failedValidation(Validator $validator)
     {
+        // Buscando todos os erros
         $errors = $validator->errors()->toArray();
 
+        // Formatando o array
         $map = array_map(fn($error) => $error, $errors);
 
-        throw new HttpResponseException(response()->json($map));
+        // Retornando o array formatado
+        throw new HttpResponseException(response()->json($map, 422));
     }   
 }
